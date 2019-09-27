@@ -1,0 +1,11 @@
+name: airgap-transitive
+license: Apache-2.0
+summary: Profile to test vendoring a profile that depends on an already vendored profile with no network access
+version: 0.1.0
+supports:
+  platform: os
+depends:
+# This is just a simple test fixture with no dependencies.
+ - name: profile_d
+   git: https://github.com/inspec/inspec.git
+   relative_path: test/unit/mock/profiles/dependencies/profile_d
