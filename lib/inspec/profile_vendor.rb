@@ -13,6 +13,10 @@ module Inspec
       vendor_dependencies
     end
 
+    def vendored?
+      cache_path.exist? || lockfile.exist?
+    end
+
     # The URL fetcher uses a Tempfile to retrieve the vendored
     # profile, which creates a file that is only readable by
     # the current user. In most circumstances, this is likely OK.

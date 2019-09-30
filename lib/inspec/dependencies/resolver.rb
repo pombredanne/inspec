@@ -74,7 +74,6 @@ module Inspec
 
         Inspec::Log.debug("Adding dependency #{dep.name} (#{dep.resolved_source})")
         graph[dep.name] = dep
-        require 'pry';binding.pry
 
         skip_because_already_vendored = false
         if dep.opts.key?(:path) && Dir.exist?(File.expand_path(dep.opts[:path], dep.opts[:cwd]))
