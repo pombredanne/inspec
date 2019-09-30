@@ -74,7 +74,14 @@ module Inspec
 
         Inspec::Log.debug("Adding dependency #{dep.name} (#{dep.resolved_source})")
         graph[dep.name] = dep
-        unless dep.dependencies.empty?
+
+        skip_because_already_vendored = false
+        if dep.opts.key?(:path) && Dir.exist?(File.expand_path(dep.opts[:path], dep.opts[:cwd]))
+          profile_vendor = Inspec::ProfileVendor.new(File.expand_path(dep.opts[:path], dep.opts[:cwd]))
+          skip_because_already_vendored = (profile_vendor.cache_path.exist? || profile_vendor.lockfile.exist?)
+        end
+
+        unless dep.dependencies.empty? || skip_because_already_vendored
           resolve(dep.dependencies, false, new_seen_items.dup, new_path_string)
         end
       end
