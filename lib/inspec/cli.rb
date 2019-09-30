@@ -151,8 +151,10 @@ class Inspec::InspecCLI < Inspec::BaseCLI
   end
 
   desc "vendor PATH", "Download all dependencies and generate a lockfile in a `vendor` directory"
+  option :add, type: :boolean, default: false,
+    desc: "If a vendor/ directory exists, use existing entries and add to it. Incompatible with --overwrite."
   option :overwrite, type: :boolean, default: false,
-    desc: "Overwrite existing vendored dependencies and lockfile."
+    desc: "Overwrite existing vendored dependencies and lockfile. Incompatible with --add."
   def vendor(path = nil)
     o = config
     configure_logger(o)

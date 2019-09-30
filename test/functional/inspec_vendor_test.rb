@@ -135,21 +135,17 @@ describe "example inheritance profile" do
 
       # Vendor a profile B that depends on profile A through its network address,
       # while making the existing vendored deps available.
-      # TODO: By what mechanism is inspec expected to find pre-vendored things? in a vendor/ dir in pwd?
-      FileUtils.cp_r("#{work_dir}/profile_d/vendor", "#{work_dir}/airgap-transitive")
+      # Inspec is expected to find pre-vendored things in a vendor/ dir in pwd
+      FileUtils.cp_r("#{work_dir}/profile_d/vendor", "#{work_dir}/airgap-transitive" )
 
-      # TODO: wait, wouldn't overwrite be needed (but counterproductive)?
-      # "Profile is already vendored. Use --overwrite."
-      second_vendor_result = inspec("vendor #{work_dir}/airgap-transitive --log-level debug")
+      # Use --add to tell it you know what you are doing
+      second_vendor_result = inspec("vendor #{work_dir}/airgap-transitive --log-level debug --add")
       second_vendor_result.stderr.must_equal ""
 
       # Ensure that the second vendoring does not access the network to fetch profile A
       # Best way to do that seems to be to set log level to debug and watch for git ls-remote in stdout
       refute_includes second_vendor_result.stdout, "git ls-remote"
       # Any positive assertion about using a cached version?
-
-      # I'm putting this here so the test will fail, but this is technically correct current behavior...
-      refute_includes second_vendor_result.stdout, "Profile is already vendored. Use --overwrite."
 
       assert_exit_code 0, second_vendor_result
     end

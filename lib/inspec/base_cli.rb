@@ -273,8 +273,8 @@ module Inspec
       profile_path = path || Dir.pwd
       profile_vendor = Inspec::ProfileVendor.new(profile_path)
 
-      if (profile_vendor.vendored?) && !opts[:overwrite]
-        puts "Profile is already vendored. Use --overwrite."
+      if (profile_vendor.vendored?) && !(opts[:overwrite] || opts[:add])
+        puts "Profile is already vendored. Use --add or --overwrite."
         return false
       end
 
