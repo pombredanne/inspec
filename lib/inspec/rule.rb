@@ -74,6 +74,11 @@ module Inspec
       end
     end
 
+    def method_missing(method_name, *arguments)
+      inspec = self.inspec if respond_to? :inspec
+      Inspec::DSL.method_missing_resource(inspec, method_name, *arguments)
+    end
+
     def to_s
       Inspec::Rule.rule_id(self)
     end
