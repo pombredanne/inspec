@@ -214,6 +214,8 @@ module Inspec::Fetcher
       else
         open(target, opts)
       end
+    rescue Errno::ECONNREFUSED, OpenURI::HTTPError => e
+      raise Inspec::FetcherFailure.new("Profile URL dependency #{target} could not be fetched: #{e.message}")
     end
 
     def download_archive(path)
